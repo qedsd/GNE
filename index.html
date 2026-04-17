@@ -110,6 +110,7 @@
 
     <!-- 首屏 Section -->
     <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden min-h-screen flex items-center">
+        <!-- 保留了背景星空效果 -->
         <div class="absolute inset-0 z-[-1]">
             <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000&auto=format&fit=crop" alt="Space Background" class="w-full h-full object-cover opacity-30">
             <div class="absolute inset-0 bg-gradient-to-b from-eve-dark/50 via-eve-dark/80 to-eve-dark"></div>
@@ -118,7 +119,6 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <div class="fade-in-up">
-                    <!-- 标签边框颜色使用 Cyan -->
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-eve-cyan/40 bg-eve-cyan/10 text-eve-cyan text-xs font-scifi font-bold mb-6 tracking-widest">
                         <span class="relative flex h-2 w-2">
                           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-eve-cyan opacity-75"></span>
@@ -127,7 +127,6 @@
                         <span data-i18n="heroTag">EVE ONLINE 综合辅助工具</span>
                     </div>
                     
-                    <!-- 主标题使用三色渐变，并添加粉紫色的发光阴影 -->
                     <h1 class="font-scifi text-5xl lg:text-7xl font-bold leading-tight mb-6" data-i18n="heroTitle">
                         掌控星海，<br>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-eve-cyan via-eve-purple to-eve-pink drop-shadow-[0_0_15px_rgba(230,87,209,0.4)]">新伊甸漫游指南</span>
@@ -139,7 +138,6 @@
                     
                     <div class="flex flex-col sm:flex-row flex-wrap gap-4 items-start sm:items-center">
                         <div class="flex flex-col gap-2">
-                            <!-- 下载按钮：背景色从 Cyan 渐变到 Purple，悬停时变成 Purple 到 Pink -->
                             <a href="https://github.com/qedsd/TheGuideToTheNewEden/releases/latest" target="_blank" class="group relative px-8 py-3.5 bg-gradient-to-r from-eve-cyan to-eve-purple hover:from-eve-purple hover:to-eve-pink text-white font-bold font-scifi text-lg rounded overflow-hidden shadow-[0_0_20px_rgba(120,61,208,0.5)] hover:shadow-[0_0_30px_rgba(230,87,209,0.6)] transition-all duration-300 inline-flex">
                                 <div class="absolute inset-0 w-0 bg-white transition-all duration-[250ms] ease-out group-hover:w-full opacity-10"></div>
                                 <span class="relative flex items-center gap-2">
@@ -153,11 +151,10 @@
                             </div>
                         </div>
                         
-                        <!-- Hero GitHub 源码按钮 (悬停紫色边框) -->
+                        <!-- Hero GitHub 源码按钮 -->
                         <a href="https://github.com/qedsd/TheGuideToTheNewEden" target="_blank" class="group px-6 py-3.5 bg-eve-panel/50 backdrop-blur border border-eve-border hover:border-eve-purple/80 text-white font-bold font-scifi text-lg rounded transition-colors flex items-center gap-3 self-start">
                             <i class="ph ph-github-logo text-2xl text-eve-text group-hover:text-white transition-colors"></i>
                             <span data-i18n="btnSource">浏览源码</span>
-                            <!-- 动态加载的 Star 数量 -->
                             <div class="github-stars hidden items-center gap-1.5 px-2 py-0.5 bg-black/40 border border-white/10 rounded text-sm">
                                 <i class="ph-fill ph-star text-eve-gold"></i> 
                                 <span class="star-count tracking-wider">0</span>
@@ -170,16 +167,7 @@
                 <div class="relative fade-in-up" style="transition-delay: 0.2s;">
                     <!-- 悬浮光晕背景使用三色渐变 -->
                     <div class="absolute -inset-1 bg-gradient-to-r from-eve-cyan via-eve-purple to-eve-pink rounded-lg blur opacity-30"></div>
-                    <div class="relative bg-eve-panel border border-eve-border rounded-lg shadow-2xl p-2 overflow-hidden">
-                        <div class="flex items-center gap-2 px-2 pb-2 border-b border-eve-border/50 mb-2">
-                            <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
-                            <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
-                            <span class="text-xs text-eve-text font-scifi ml-2">TheGuideToTheNewEden.exe</span>
-                        </div>
-                        <!-- UI 截图占位 (需替换为真实图片) -->
-                        <img src="Images/home.png?q=80&w=1200&auto=format&fit=crop" alt="App Dashboard Preview" class="rounded object-cover w-full h-auto opacity-80 hover:opacity-100 transition-opacity">
-                    </div>
+                    <img src="Images/home.png?q=80&w=1200&auto=format&fit=crop" alt="App Dashboard Preview" class="rounded object-cover w-full h-auto opacity-80 hover:opacity-100 transition-opacity">
                 </div>
             </div>
         </div>
@@ -190,7 +178,6 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 fade-in-up">
                 <h2 class="font-scifi text-4xl font-bold mb-4">SYSTEM <span class="text-transparent bg-clip-text bg-gradient-to-r from-eve-cyan to-eve-pink">FEATURES</span></h2>
-                <!-- 分隔线使用三色渐变 -->
                 <div class="h-1 w-24 bg-gradient-to-r from-eve-cyan via-eve-purple to-eve-pink mx-auto rounded shadow-[0_0_10px_rgba(120,61,208,0.5)]"></div>
                 <p class="mt-4 text-eve-text" data-i18n="featSub">整合多项核心数据接口，提供一站式游戏辅助体验。</p>
             </div>
@@ -263,16 +250,23 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- 截图占位 (需替换为真实图片) -->
-                <div class="group relative overflow-hidden rounded border border-eve-border hover:border-eve-purple/50 fade-in-up transition-all">
-                    <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=800&auto=format&fit=crop" class="w-full h-64 object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+                <!-- 截图占位框 1，去掉了假图片，替换成深色占位，后续请自行放入 <img> 标签 -->
+                <div class="group relative overflow-hidden rounded border border-eve-border hover:border-eve-purple/50 fade-in-up transition-all bg-[#0d121c] h-64 flex items-center justify-center cursor-pointer">
+                    <div class="flex flex-col items-center gap-2 text-eve-border group-hover:text-eve-purple transition-colors">
+                        <i class="ph-duotone ph-image text-4xl"></i>
+                        <span class="font-scifi text-xs font-bold tracking-widest">GALLERY IMAGE 1</span>
+                    </div>
                     <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-4">
                         <h4 class="font-scifi font-bold text-lg text-white" data-i18n="ui1">角色概览面板</h4>
                     </div>
                 </div>
-                <!-- 截图占位 (需替换为真实图片) -->
-                <div class="group relative overflow-hidden rounded border border-eve-border hover:border-eve-pink/50 fade-in-up transition-all" style="transition-delay: 0.1s;">
-                    <img src="https://images.unsplash.com/photo-1543286386-713bdd548da4?q=80&w=800&auto=format&fit=crop" class="w-full h-64 object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+
+                <!-- 截图占位框 2，去掉了假图片，替换成深色占位，后续请自行放入 <img> 标签 -->
+                <div class="group relative overflow-hidden rounded border border-eve-border hover:border-eve-pink/50 fade-in-up transition-all bg-[#0d121c] h-64 flex items-center justify-center cursor-pointer" style="transition-delay: 0.1s;">
+                    <div class="flex flex-col items-center gap-2 text-eve-border group-hover:text-eve-pink transition-colors">
+                        <i class="ph-duotone ph-image text-4xl"></i>
+                        <span class="font-scifi text-xs font-bold tracking-widest">GALLERY IMAGE 2</span>
+                    </div>
                     <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-4">
                         <h4 class="font-scifi font-bold text-lg text-white" data-i18n="ui2">市场趋势图表</h4>
                     </div>
@@ -379,7 +373,6 @@
         });
 
         // 3. 多语言(i18n)数据与逻辑
-        // 注意：仓库贡献列表因为包含 HTML 结构，为了简化，直接用完整的 li 列表插入
         const i18nData = {
             zh: {
                 navFeatures: "核心功能", navScreenshots: "界面展示", navDownload: "下载安装",
