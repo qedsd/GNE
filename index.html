@@ -1,6 +1,448 @@
-<html>
-  <body>
-    <h1>Hello, World!</h1>
-    <p>我的第一个GitHub Pages网站！</p>
-  </body>
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新伊甸漫游指南 | The Guide To The New Eden</title>
+    
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 引入 Google 字体 (Rajdhani 具有科幻感) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- 引入 Phosphor Icons (轻量级图标库) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans SC"', 'sans-serif'],
+                        scifi: ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        eve: {
+                            dark: '#0a0e17',
+                            panel: '#151b29',
+                            border: '#2a3a5a',
+                            cyan: '#c05ee3', /* 已替换为新主题色 */
+                            gold: '#ffd700',
+                            text: '#a0aec0'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0a0e17;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0e17; }
+        ::-webkit-scrollbar-thumb { background: #2a3a5a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c05ee3; }
+
+        /* 发光效果 (RGB: 192, 94, 227) */
+        .glow-text { text-shadow: 0 0 10px rgba(192, 94, 227, 0.5); }
+        .glow-box { box-shadow: 0 0 20px rgba(192, 94, 227, 0.15); }
+        
+        /* 蜂窝背景 */
+        .hex-bg { background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 34.641L40 23.094v-11.547L20 0 0 11.547v11.547L20 34.641z' fill='%23ffffff' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E"); }
+
+        /* 动画 */
+        .fade-in-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-in-up.visible { opacity: 1; transform: translateY(0); }
+
+        /* 语言切换按钮样式 */
+        .lang-btn.active { color: #c05ee3; font-weight: bold; }
+    </style>
+</head>
+<body class="antialiased hex-bg selection:bg-eve-cyan selection:text-eve-dark">
+
+    <!-- 导航栏 -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300 bg-eve-dark/80 backdrop-blur-md border-b border-eve-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <i class="ph-fill ph-planet text-3xl text-eve-cyan"></i>
+                    <span class="font-scifi text-2xl font-bold tracking-wider">NEW EDEN <span class="text-eve-cyan">GUIDE</span></span>
+                </div>
+                
+                <div class="flex items-center space-x-6">
+                    <div class="hidden md:flex space-x-6 items-center">
+                        <a href="#features" class="text-sm font-medium text-eve-text hover:text-white transition-colors" data-i18n="navFeatures">核心功能</a>
+                        <a href="#screenshots" class="text-sm font-medium text-eve-text hover:text-white transition-colors" data-i18n="navScreenshots">界面展示</a>
+                        <a href="#download" class="text-sm font-medium text-eve-text hover:text-white transition-colors" data-i18n="navDownload">下载安装</a>
+                        
+                        <!-- 导航栏 GitHub 按钮 -->
+                        <a href="https://github.com/qedsd/TheGuideToTheNewEden" target="_blank" class="group flex items-center text-sm font-medium bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded border border-white/20 transition-all">
+                            <div class="flex items-center gap-2">
+                                <i class="ph ph-github-logo text-lg"></i> GitHub
+                            </div>
+                            <!-- 动态加载的 Star 数量 (初始隐藏) -->
+                            <div class="github-stars hidden items-center gap-1 ml-2 pl-2 border-l border-white/20 text-xs font-scifi">
+                                <i class="ph-fill ph-star text-eve-gold group-hover:scale-110 transition-transform"></i> 
+                                <span class="star-count font-bold">0</span>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- 语言切换 -->
+                    <div class="flex items-center gap-2 text-sm text-eve-text border-l border-eve-border pl-6">
+                        <button onclick="switchLang('zh')" id="btn-zh" class="lang-btn hover:text-white transition-colors">中</button>
+                        <span>/</span>
+                        <button onclick="switchLang('en')" id="btn-en" class="lang-btn hover:text-white transition-colors font-scifi">EN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 首屏 Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden min-h-screen flex items-center">
+        <div class="absolute inset-0 z-[-1]">
+            <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000&auto=format&fit=crop" alt="Space Background" class="w-full h-full object-cover opacity-30">
+            <div class="absolute inset-0 bg-gradient-to-b from-eve-dark/50 via-eve-dark/80 to-eve-dark"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="fade-in-up">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-eve-cyan/30 bg-eve-cyan/10 text-eve-cyan text-xs font-scifi font-bold mb-6 tracking-widest">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-eve-cyan opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-eve-cyan"></span>
+                        </span>
+                        <span data-i18n="heroTag">EVE ONLINE 综合辅助工具</span>
+                    </div>
+                    
+                    <h1 class="font-scifi text-5xl lg:text-7xl font-bold leading-tight mb-6" data-i18n="heroTitle">
+                        掌控星海，<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-eve-cyan to-blue-500 glow-text">新伊甸漫游指南</span>
+                    </h1>
+                    
+                    <p class="text-lg text-eve-text mb-8 max-w-xl leading-relaxed" data-i18n="heroDesc">
+                        专为克隆飞行员打造的全方位桌面端工具。集合角色监控、市场分析、星图导航与情报预警于一体，助您在危机四伏的新伊甸宇宙中游刃有余。
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row flex-wrap gap-4 items-start sm:items-center">
+                        <div class="flex flex-col gap-2">
+                            <!-- 发光阴影已更新为 RGB 192, 94, 227 -->
+                            <a href="https://github.com/qedsd/TheGuideToTheNewEden/releases/latest" target="_blank" class="group relative px-8 py-3.5 bg-eve-cyan text-eve-dark font-bold font-scifi text-lg rounded overflow-hidden shadow-[0_0_15px_rgba(192,94,227,0.4)] hover:shadow-[0_0_25px_rgba(192,94,227,0.6)] transition-all inline-flex">
+                                <div class="absolute inset-0 w-0 bg-white transition-all duration-[250ms] ease-out group-hover:w-full opacity-10"></div>
+                                <span class="relative flex items-center gap-2">
+                                    <i class="ph-bold ph-download-simple"></i> <span data-i18n="btnDownload">下载最新 Release</span>
+                                </span>
+                            </a>
+                            <!-- Windows 专属提示 -->
+                            <div class="flex items-center gap-1.5 text-xs text-eve-text/80 pl-1">
+                                <i class="ph-fill ph-windows-logo text-[#00a4ef]"></i>
+                                <span data-i18n="windowsOnly">仅支持 Windows 10 / 11 操作系统</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Hero GitHub 源码按钮 (含 Star) -->
+                        <a href="https://github.com/qedsd/TheGuideToTheNewEden" target="_blank" class="group px-6 py-3.5 bg-eve-panel/50 backdrop-blur border border-eve-border hover:border-eve-cyan/50 text-white font-bold font-scifi text-lg rounded transition-colors flex items-center gap-3 self-start">
+                            <i class="ph ph-github-logo text-2xl"></i>
+                            <span data-i18n="btnSource">浏览源码</span>
+                            <!-- 动态加载的 Star 数量 -->
+                            <div class="github-stars hidden items-center gap-1.5 px-2 py-0.5 bg-black/40 border border-white/10 rounded text-sm">
+                                <i class="ph-fill ph-star text-eve-gold"></i> 
+                                <span class="star-count tracking-wider">0</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 悬浮UI预览图 -->
+                <div class="relative fade-in-up" style="transition-delay: 0.2s;">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-eve-cyan to-blue-600 rounded-lg blur opacity-20"></div>
+                    <div class="relative bg-eve-panel border border-eve-border rounded-lg shadow-2xl p-2 glow-box overflow-hidden">
+                        <div class="flex items-center gap-2 px-2 pb-2 border-b border-eve-border/50 mb-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                            <span class="text-xs text-eve-text font-scifi ml-2">TheGuideToTheNewEden.exe</span>
+                        </div>
+                        <!-- UI 截图占位 (需替换为真实图片) -->
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop" alt="App Dashboard Preview" class="rounded object-cover w-full h-auto opacity-80 hover:opacity-100 transition-opacity">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心功能区 -->
+    <section id="features" class="py-24 bg-eve-dark relative border-t border-eve-border/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="font-scifi text-4xl font-bold mb-4">SYSTEM <span class="text-eve-cyan">FEATURES</span></h2>
+                <div class="h-1 w-20 bg-eve-cyan mx-auto rounded glow-box"></div>
+                <p class="mt-4 text-eve-text" data-i18n="featSub">整合多项核心数据接口，提供一站式游戏辅助体验。</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 1 -->
+                <div class="bg-eve-panel border border-eve-border p-6 rounded-lg hover:border-eve-cyan/50 transition-colors group fade-in-up">
+                    <div class="w-12 h-12 bg-eve-cyan/10 rounded flex items-center justify-center mb-4 group-hover:bg-eve-cyan/20 transition-colors">
+                        <i class="ph ph-users text-2xl text-eve-cyan"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 font-scifi tracking-wide" data-i18n="f1Title">多角色管理</h3>
+                    <p class="text-sm text-eve-text" data-i18n="f1Desc">支持绑定多个 EVE 账号与角色。实时监控技能训练进度、资产变动、邮件及钱包余额，告别频繁切号的烦恼。</p>
+                </div>
+                <!-- 2 -->
+                <div class="bg-eve-panel border border-eve-border p-6 rounded-lg hover:border-eve-cyan/50 transition-colors group fade-in-up" style="transition-delay: 0.1s;">
+                    <div class="w-12 h-12 bg-eve-cyan/10 rounded flex items-center justify-center mb-4 group-hover:bg-eve-cyan/20 transition-colors">
+                        <i class="ph ph-chart-line-up text-2xl text-eve-cyan"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 font-scifi tracking-wide" data-i18n="f2Title">市场中心洞察</h3>
+                    <p class="text-sm text-eve-text" data-i18n="f2Desc">实时获取吉他等核心星系的市场订单数据。商品历史价格趋势图表化展示，助你敏锐捕捉跨区贸易商机。</p>
+                </div>
+                <!-- 3 -->
+                <div class="bg-eve-panel border border-eve-border p-6 rounded-lg hover:border-eve-cyan/50 transition-colors group fade-in-up" style="transition-delay: 0.2s;">
+                    <div class="w-12 h-12 bg-eve-cyan/10 rounded flex items-center justify-center mb-4 group-hover:bg-eve-cyan/20 transition-colors">
+                        <i class="ph ph-map-trifold text-2xl text-eve-cyan"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 font-scifi tracking-wide" data-i18n="f3Title">智能星图导航</h3>
+                    <p class="text-sm text-eve-text" data-i18n="f3Desc">内置 2D/3D 战术星图。自动规避高危星系，提供安全/最短路线规划，并支持击杀数据叠加显示，确保航行安全。</p>
+                </div>
+                <!-- 4 -->
+                <div class="bg-eve-panel border border-eve-border p-6 rounded-lg hover:border-eve-cyan/50 transition-colors group fade-in-up" style="transition-delay: 0.3s;">
+                    <div class="w-12 h-12 bg-eve-cyan/10 rounded flex items-center justify-center mb-4 group-hover:bg-eve-cyan/20 transition-colors">
+                        <i class="ph ph-broadcast text-2xl text-eve-cyan"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 font-scifi tracking-wide" data-i18n="f4Title">本地情报预警</h3>
+                    <p class="text-sm text-eve-text" data-i18n="f4Desc">自动解析游戏内聊天日志，实时播报本地星系敌对目标出没信息，支持声音及弹窗双重警报，刷怪挖矿更安心。</p>
+                </div>
+                <!-- 5 替换为 深度数据百科 -->
+                <div class="bg-eve-panel border border-eve-border p-6 rounded-lg hover:border-eve-cyan/50 transition-colors group fade-in-up" style="transition-delay: 0.4s;">
+                    <div class="w-12 h-12 bg-eve-cyan/10 rounded flex items-center justify-center mb-4 group-hover:bg-eve-cyan/20 transition-colors">
+                        <i class="ph ph-database text-2xl text-eve-cyan"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 font-scifi tracking-wide" data-i18n="f5Title">深度数据百科</h3>
+                    <p class="text-sm text-eve-text" data-i18n="f5Desc">内置涵盖舰船、装备、蓝图及星系的详尽数据库。支持离线快速检索与属性对比，新伊甸万物皆在掌握。</p>
+                </div>
+                <!-- 6 -->
+                <div class="bg-eve-panel border border-eve-border p-6 rounded-lg hover:border-eve-cyan/50 transition-colors group fade-in-up" style="transition-delay: 0.5s;">
+                    <div class="w-12 h-12 bg-eve-cyan/10 rounded flex items-center justify-center mb-4 group-hover:bg-eve-cyan/20 transition-colors">
+                        <i class="ph ph-globe-hemisphere-west text-2xl text-eve-cyan"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 font-scifi tracking-wide" data-i18n="f6Title">国服/欧服双端支持</h3>
+                    <p class="text-sm text-eve-text" data-i18n="f6Desc">底层架构同时兼容 EVE 晨曦（国服）与 Tranquility（欧服）API 数据接口，一次配置，双服畅游。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 界面展示 -->
+    <section id="screenshots" class="py-24 bg-eve-panel/50 relative border-t border-eve-border/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in-up">
+                <h2 class="font-scifi text-4xl font-bold mb-4">UI <span class="text-eve-cyan">GALLERY</span></h2>
+                <div class="h-1 w-20 bg-eve-cyan mx-auto rounded glow-box"></div>
+                <p class="mt-4 text-eve-text" data-i18n="uiSub">专为暗黑环境设计的现代化 WinUI 3 界面。</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 截图占位 (需替换为真实图片) -->
+                <div class="group relative overflow-hidden rounded border border-eve-border fade-in-up">
+                    <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=800&auto=format&fit=crop" class="w-full h-64 object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-4">
+                        <h4 class="font-scifi font-bold text-lg" data-i18n="ui1">角色概览面板</h4>
+                    </div>
+                </div>
+                <!-- 截图占位 (需替换为真实图片) -->
+                <div class="group relative overflow-hidden rounded border border-eve-border fade-in-up" style="transition-delay: 0.1s;">
+                    <img src="https://images.unsplash.com/photo-1543286386-713bdd548da4?q=80&w=800&auto=format&fit=crop" class="w-full h-64 object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-4">
+                        <h4 class="font-scifi font-bold text-lg" data-i18n="ui2">市场趋势图表</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 下载区 -->
+    <section id="download" class="py-24 bg-eve-dark relative border-t border-eve-border/50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-up">
+            <i class="ph-duotone ph-rocket-launch text-6xl text-eve-cyan mb-6 inline-block"></i>
+            <h2 class="font-scifi text-4xl font-bold mb-6" data-i18n="dlTitle">准备好跃迁了吗？</h2>
+            <p class="text-eve-text mb-10 max-w-2xl mx-auto" data-i18n="dlDesc">
+                获取最新版本的 <b>新伊甸漫游指南 (The Guide To The New Eden)</b>。该项目开源免费，持续由社区驱动更新。请前往 GitHub Releases 页面下载编译好的安装包。
+            </p>
+            
+            <div class="flex flex-col items-center justify-center mb-12">
+                <!-- 阴影已更新为 RGB 192, 94, 227 -->
+                <a href="https://github.com/qedsd/TheGuideToTheNewEden/releases" target="_blank" class="px-8 py-4 bg-eve-cyan text-eve-dark font-bold font-scifi text-xl rounded hover:bg-white transition-colors flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(192,94,227,0.3)]">
+                    <i class="ph-bold ph-download-simple"></i> <span data-i18n="dlBtn">前往 GitHub Releases 下载</span>
+                </a>
+                <!-- Windows 专属提示 -->
+                <div class="mt-4 flex items-center gap-1.5 text-sm text-eve-text">
+                    <i class="ph-fill ph-windows-logo text-[#00a4ef]"></i>
+                    <span data-i18n="windowsOnly">仅支持 Windows 10 / 11 操作系统</span>
+                </div>
+            </div>
+
+            <div class="text-left bg-eve-panel border border-eve-border p-6 rounded-lg">
+                <h4 class="text-lg font-bold mb-4 font-scifi border-b border-eve-border pb-2 flex items-center gap-2">
+                    <i class="ph ph-git-pull-request"></i> <span data-i18n="devTitle">仓库参与与调整</span>
+                </h4>
+                <ul class="space-y-3 text-sm text-eve-text list-disc list-inside">
+                    <li data-i18n="dev1">如果您发现了 Bug，请在 GitHub 提交 <a href='https://github.com/qedsd/TheGuideToTheNewEden/issues' class='text-eve-cyan hover:underline'>Issue</a>，附带错误日志或复现步骤。</li>
+                    <li data-i18n="dev2">欢迎开发者提交 <a href='https://github.com/qedsd/TheGuideToTheNewEden/pulls' class='text-eve-cyan hover:underline'>Pull Request</a>。无论是新增功能、优化界面还是修复问题，社区的贡献让指南更强大。</li>
+                    <li data-i18n="dev3">代码结构调整建议：本项目基于 C# WinUI 3 开发，建议使用 Visual Studio 2022+ 打开解决方案进行编译调试。</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#05080f] py-10 border-t border-eve-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-eve-text text-sm font-scifi">
+                &copy; <span id="year">2024</span> The Guide To The New Eden. Open Source Project.
+            </div>
+            <div class="text-xs text-eve-text/50 max-w-xl text-center md:text-right" data-i18n="disclaimer">
+                EVE Online, the EVE logo, EVE and all associated logos and designs are the intellectual property of CCP hf. This tool is a fan-made project and is not affiliated with CCP hf.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS 脚本：GitHub API, 动画, 国际化 -->
+    <script>
+        // 1. 获取 GitHub 仓库 Star 数量
+        async function fetchGitHubStars() {
+            try {
+                const response = await fetch('https://api.github.com/repos/qedsd/TheGuideToTheNewEden');
+                
+                if (!response.ok) {
+                    throw new Error('网络响应异常');
+                }
+                
+                const data = await response.json();
+                const stars = data.stargazers_count;
+                
+                // 格式化数字 (例如 1200 格式化为 1.2k)
+                const formattedStars = stars > 999 ? (stars / 1000).toFixed(1) + 'k' : stars;
+                
+                // 更新页面中的数字
+                document.querySelectorAll('.star-count').forEach(el => {
+                    el.textContent = formattedStars;
+                });
+                
+                // 显示包含 Star 数量的容器
+                document.querySelectorAll('.github-stars').forEach(el => {
+                    el.classList.remove('hidden');
+                    el.classList.add('flex'); // 或者 inline-flex
+                });
+            } catch (error) {
+                console.error('获取 GitHub Star 失败:', error);
+            }
+        }
+
+        // 2. 页面加载初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 设置当前年份
+            document.getElementById('year').textContent = new Date().getFullYear();
+            
+            // 触发获取 Star 数
+            fetchGitHubStars();
+
+            // 触发滚动动画观察器
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+        });
+
+        // 3. 多语言(i18n)数据与逻辑
+        const i18nData = {
+            zh: {
+                navFeatures: "核心功能", navScreenshots: "界面展示", navDownload: "下载安装",
+                heroTag: "EVE ONLINE 综合辅助工具",
+                heroTitle: "掌控星海，<br><span class='text-transparent bg-clip-text bg-gradient-to-r from-eve-cyan to-blue-500 glow-text'>新伊甸漫游指南</span>",
+                heroDesc: "专为克隆飞行员打造的全方位桌面端工具。集合角色监控、市场分析、星图导航与情报预警于一体，助您在危机四伏的新伊甸宇宙中游刃有余。",
+                btnDownload: "下载最新 Release", btnSource: "浏览源码", windowsOnly: "仅支持 Windows 10 / 11 操作系统",
+                featSub: "整合多项核心数据接口，提供一站式游戏辅助体验。",
+                f1Title: "多角色管理", f1Desc: "支持绑定多个 EVE 账号与角色。实时监控技能训练进度、资产变动、邮件及钱包余额，告别频繁切号的烦恼。",
+                f2Title: "市场中心洞察", f2Desc: "实时获取吉他等核心星系的市场订单数据。商品历史价格趋势图表化展示，助你敏锐捕捉跨区贸易商机。",
+                f3Title: "智能星图导航", f3Desc: "内置 2D/3D 战术星图。自动规避高危星系，提供安全/最短路线规划，并支持击杀数据叠加显示，确保航行安全。",
+                f4Title: "本地情报预警", f4Desc: "自动解析游戏内聊天日志，实时播报本地星系敌对目标出没信息，支持声音及弹窗双重警报，刷怪挖矿更安心。",
+                f5Title: "深度数据百科", f5Desc: "内置涵盖舰船、装备、蓝图及星系的详尽数据库。支持离线快速检索与属性对比，新伊甸万物皆在掌握。",
+                f6Title: "国服/欧服双端支持", f6Desc: "底层架构同时兼容 EVE 晨曦（国服）与 Tranquility（欧服）API 数据接口，一次配置，双服畅游。",
+                uiSub: "专为暗黑环境设计的现代化 WinUI 3 界面。", ui1: "角色概览面板", ui2: "市场趋势图表",
+                dlTitle: "准备好跃迁了吗？",
+                dlDesc: "获取最新版本的 <b>新伊甸漫游指南 (The Guide To The New Eden)</b>。该项目开源免费，持续由社区驱动更新。请前往 GitHub Releases 页面下载编译好的安装包。",
+                dlBtn: "前往 GitHub Releases 下载", devTitle: "仓库参与与调整",
+                dev1: "如果您发现了 Bug，请在 GitHub 提交 <a href='https://github.com/qedsd/TheGuideToTheNewEden/issues' class='text-eve-cyan hover:underline'>Issue</a>，附带错误日志或复现步骤。",
+                dev2: "欢迎开发者提交 <a href='https://github.com/qedsd/TheGuideToTheNewEden/pulls' class='text-eve-cyan hover:underline'>Pull Request</a>。无论是新增功能、优化界面还是修复问题，社区的贡献让指南更强大。",
+                dev3: "代码结构调整建议：本项目基于 C# WinUI 3 开发，建议使用 Visual Studio 2022+ 打开解决方案进行编译调试。",
+                disclaimer: "EVE Online及相关Logo等版权归 CCP hf. 所有。此工具为玩家社区饭制开源项目，与官方无关。"
+            },
+            en: {
+                navFeatures: "Features", navScreenshots: "Gallery", navDownload: "Download",
+                heroTag: "EVE ONLINE COMPREHENSIVE UTILITY",
+                heroTitle: "Master the Stars,<br><span class='text-transparent bg-clip-text bg-gradient-to-r from-eve-cyan to-blue-500 glow-text'>The Guide To The New Eden</span>",
+                heroDesc: "An all-in-one desktop companion built for capsuleers. Featuring multi-character monitoring, market analysis, starmap navigation, and local intel warnings to help you thrive in the perilous universe of New Eden.",
+                btnDownload: "Download Latest Release", btnSource: "View Source Code", windowsOnly: "Requires Windows 10 / 11 Operating System",
+                featSub: "Integrating core game APIs for a seamless desktop experience.",
+                f1Title: "Multi-Character Manager", f1Desc: "Bind multiple EVE accounts. Monitor skill queues, asset changes, EVEMail, and wallet balances in real-time without constant relogging.",
+                f2Title: "Market Hub Insights", f2Desc: "Fetch real-time market orders for Jita and other hubs. Visualize historical price trends to seize regional trading opportunities.",
+                f3Title: "Smart Starmap Navigation", f3Desc: "Built-in 2D/3D tactical map. Auto-avoid dangerous systems, calculate safest/shortest routes, and overlay kill stats for secure travels.",
+                f4Title: "Local Intel Warning", f4Desc: "Auto-parse in-game chat logs. Broadcast hostile presence in local systems with audio and pop-up alerts. Rat and mine with peace of mind.",
+                f5Title: "Comprehensive Database", f5Desc: "Built-in detailed database covering ships, modules, blueprints, and systems. Fast offline retrieval and stat comparison at your fingertips.",
+                f6Title: "Serenity & Tranquility", f6Desc: "Underlying architecture fully supports both Serenity (CN) and Tranquility (Global) APIs. Configure once, play anywhere.",
+                uiSub: "Modern WinUI 3 interface crafted for dark gaming environments.", ui1: "Character Dashboard", ui2: "Market Trend Charts",
+                dlTitle: "Ready to Jump?",
+                dlDesc: "Get the latest version of <b>The Guide To The New Eden</b>. This project is free, open-source, and community-driven. Download the compiled binaries via GitHub Releases.",
+                dlBtn: "Download from GitHub Releases", devTitle: "Repository Contributions",
+                dev1: "If you encounter a bug, please submit an <a href='https://github.com/qedsd/TheGuideToTheNewEden/issues' class='text-eve-cyan hover:underline'>Issue</a> on GitHub with error logs or steps to reproduce.",
+                dev2: "Developers are welcome to submit <a href='https://github.com/qedsd/TheGuideToTheNewEden/pulls' class='text-eve-cyan hover:underline'>Pull Requests</a>. From new features to UI tweaks, community contributions make the Guide better.",
+                dev3: "Architecture Note: Built with C# WinUI 3. We recommend using Visual Studio 2022+ to open the solution for compilation and debugging.",
+                disclaimer: "EVE Online, the EVE logo, EVE and all associated logos and designs are the intellectual property of CCP hf. This tool is a fan-made project and is not affiliated with CCP hf."
+            }
+        };
+
+        // 切换语言方法
+        function switchLang(lang) {
+            // 更新本地存储
+            localStorage.setItem('guide_lang', lang);
+            
+            // 切换按钮高亮状态
+            document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            
+            // 更新 html lang 属性
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en-US';
+
+            // 替换所有带有 data-i18n 属性的内容
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18nData[lang] && i18nData[lang][key]) {
+                    el.innerHTML = i18nData[lang][key];
+                }
+            });
+        }
+
+        // 页面加载时初始化语言
+        const savedLang = localStorage.getItem('guide_lang') || 'zh';
+        switchLang(savedLang);
+    </script>
+</body>
 </html>
