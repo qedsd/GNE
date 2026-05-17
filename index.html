@@ -29,9 +29,9 @@
                             dark: '#0a0e17',
                             panel: '#151b29',
                             border: '#2a3a5a',
-                            cyan: '#1eb1e4',   /* 主题色 1 */
-                            purple: '#783dd0', /* 主题色 2 */
-                            pink: '#e657d1',   /* 主题色 3 */
+                            cyan: '#1eb1e4',
+                            purple: '#783dd0',
+                            pink: '#e657d1',
                             gold: '#ffd700',
                             text: '#a0aec0'
                         }
@@ -48,34 +48,66 @@
             overflow-x: hidden;
         }
 
-        /* 自定义滚动条 */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0a0e17; }
         ::-webkit-scrollbar-thumb { background: #2a3a5a; border-radius: 4px; }
-        /* 滚动条悬停时展现三色渐变 */
         ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #1eb1e4, #783dd0, #e657d1); }
 
-        /* 蜂窝背景 */
         .hex-bg { background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 34.641L40 23.094v-11.547L20 0 0 11.547v11.547L20 34.641z' fill='%23ffffff' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E"); }
 
-        /* 动画 */
         .fade-in-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
         .fade-in-up.visible { opacity: 1; transform: translateY(0); }
 
-        /* 语言切换按钮样式 */
         .lang-btn.active { color: #1eb1e4; font-weight: bold; text-shadow: 0 0 10px rgba(30,177,228,0.5); }
+        
+        .screenshot-card {
+            background: #0d121c;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            cursor: pointer;
+        }
+        .screenshot-card img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            max-height: 220px;
+            transition: transform 0.2s ease;
+        }
+        .screenshot-card:hover {
+            border-color: rgba(120, 61, 208, 0.7);
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5), 0 0 0 1px rgba(120,61,208,0.3);
+            transform: translateY(-4px);
+        }
+        .screenshot-card:hover img {
+            transform: scale(1.01);
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.75rem;
+        }
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(1, 1fr);
+                gap: 1.25rem;
+            }
+            .screenshot-card img {
+                max-height: 180px;
+            }
+        }
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .gallery-grid {
+                gap: 1.25rem;
+            }
+        }
     </style>
 </head>
-<!-- 选中文本高亮使用深紫色背景 -->
 <body class="antialiased hex-bg selection:bg-eve-purple selection:text-white">
 
-    <!-- 导航栏 -->
     <nav class="fixed w-full z-50 top-0 transition-all duration-300 bg-eve-dark/80 backdrop-blur-md border-b border-eve-border">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
                     <i class="ph-fill ph-planet text-3xl text-eve-cyan drop-shadow-[0_0_8px_rgba(30,177,228,0.5)]"></i>
-                    <!-- Logo 使用 Cyan 到 Pink 的渐变 -->
                     <span class="font-scifi text-2xl font-bold tracking-wider">NEW EDEN <span class="text-transparent bg-clip-text bg-gradient-to-r from-eve-cyan to-eve-pink">GUIDE</span></span>
                 </div>
                 
@@ -85,7 +117,6 @@
                         <a href="#screenshots" class="text-sm font-medium text-eve-text hover:text-white transition-colors" data-i18n="navScreenshots">界面展示</a>
                         <a href="#download" class="text-sm font-medium text-eve-text hover:text-white transition-colors" data-i18n="navDownload">下载安装</a>
                         
-                        <!-- 导航栏 GitHub 按钮 -->
                         <a href="https://github.com/qedsd/TheGuideToTheNewEden" target="_blank" class="group flex items-center text-sm font-medium bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded border border-white/20 transition-all">
                             <div class="flex items-center gap-2">
                                 <i class="ph ph-github-logo text-lg"></i> GitHub
@@ -97,7 +128,6 @@
                         </a>
                     </div>
                     
-                    <!-- 语言切换 -->
                     <div class="flex items-center gap-2 text-sm text-eve-text border-l border-eve-border pl-6">
                         <button onclick="switchLang('zh')" id="btn-zh" class="lang-btn hover:text-white transition-colors">中</button>
                         <span>/</span>
@@ -108,9 +138,7 @@
         </div>
     </nav>
 
-    <!-- 首屏 Section -->
     <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden min-h-screen flex items-center">
-        <!-- 保留了背景星空效果 -->
         <div class="absolute inset-0 z-[-1]">
             <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000&auto=format&fit=crop" alt="Space Background" class="w-full h-full object-cover opacity-30">
             <div class="absolute inset-0 bg-gradient-to-b from-eve-dark/50 via-eve-dark/80 to-eve-dark"></div>
@@ -144,14 +172,12 @@
                                     <i class="ph-bold ph-download-simple"></i> <span data-i18n="btnDownload">下载最新 Release</span>
                                 </span>
                             </a>
-                            <!-- Windows 专属提示 -->
                             <div class="flex items-center gap-1.5 text-xs text-eve-text/80 pl-1">
                                 <i class="ph-fill ph-windows-logo text-eve-cyan"></i>
                                 <span data-i18n="windowsOnly">仅支持 Windows 10 / 11 操作系统</span>
                             </div>
                         </div>
                         
-                        <!-- Hero GitHub 源码按钮 -->
                         <a href="https://github.com/qedsd/TheGuideToTheNewEden" target="_blank" class="group px-6 py-3.5 bg-eve-panel/50 backdrop-blur border border-eve-border hover:border-eve-purple/80 text-white font-bold font-scifi text-lg rounded transition-colors flex items-center gap-3 self-start">
                             <i class="ph ph-github-logo text-2xl text-eve-text group-hover:text-white transition-colors"></i>
                             <span data-i18n="btnSource">浏览源码</span>
@@ -163,17 +189,14 @@
                     </div>
                 </div>
 
-                <!-- 悬浮UI预览图 -->
                 <div class="relative fade-in-up" style="transition-delay: 0.2s;">
-                    <!-- 悬浮光晕背景使用三色渐变 -->
                     <div class="absolute -inset-1 bg-gradient-to-r from-eve-cyan via-eve-purple to-eve-pink rounded-lg blur opacity-30"></div>
-                    <img src="Images/zh/Home_Dark.png" alt="App Dashboard Preview" class="rounded object-cover w-full h-auto opacity-80 hover:opacity-100 transition-opacity">
+                    <img id="heroPreviewImage" src="Images/zh/Home_Dark.png" alt="App Dashboard Preview" class="rounded object-cover w-full h-auto opacity-80 hover:opacity-100 transition-opacity">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 核心功能区 -->
     <section id="features" class="py-24 bg-eve-dark relative border-t border-eve-border/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 fade-in-up">
@@ -183,7 +206,6 @@
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- 卡片 1: Cyan (蓝) -->
                 <div class="bg-eve-panel border border-eve-border p-6 rounded-lg hover:border-eve-cyan/60 hover:shadow-[0_0_15px_rgba(30,177,228,0.2)] transition-all group fade-in-up">
                     <div class="w-12 h-12 bg-eve-cyan/10 rounded flex items-center justify-center mb-4 group-hover:bg-eve-cyan/20 transition-colors">
                         <i class="ph ph-users text-2xl text-eve-cyan drop-shadow-[0_0_8px_rgba(30,177,228,0.6)]"></i>
@@ -192,7 +214,6 @@
                     <p class="text-sm text-eve-text group-hover:text-white/90 transition-colors" data-i18n="f1Desc">支持绑定多个 EVE 账号与角色。实时监控技能训练进度、资产变动、邮件及钱包余额，告别频繁切号的烦恼。</p>
                 </div>
 
-                <!-- 卡片 2: Purple (紫) -->
                 <div class="bg-eve-panel border border-eve-border p-6 rounded-lg hover:border-eve-purple/60 hover:shadow-[0_0_15px_rgba(120,61,208,0.2)] transition-all group fade-in-up" style="transition-delay: 0.1s;">
                     <div class="w-12 h-12 bg-eve-purple/10 rounded flex items-center justify-center mb-4 group-hover:bg-eve-purple/20 transition-colors">
                         <i class="ph ph-chart-line-up text-2xl text-eve-purple drop-shadow-[0_0_8px_rgba(120,61,208,0.6)]"></i>
@@ -201,7 +222,6 @@
                     <p class="text-sm text-eve-text group-hover:text-white/90 transition-colors" data-i18n="f2Desc">实时获取吉他等核心星系的市场订单数据。商品历史价格趋势图表化展示，助你敏锐捕捉跨区贸易商机。</p>
                 </div>
 
-                <!-- 卡片 3: Pink (粉) -->
                 <div class="bg-eve-panel border border-eve-border p-6 rounded-lg hover:border-eve-pink/60 hover:shadow-[0_0_15px_rgba(230,87,209,0.2)] transition-all group fade-in-up" style="transition-delay: 0.2s;">
                     <div class="w-12 h-12 bg-eve-pink/10 rounded flex items-center justify-center mb-4 group-hover:bg-eve-pink/20 transition-colors">
                         <i class="ph ph-map-trifold text-2xl text-eve-pink drop-shadow-[0_0_8px_rgba(230,87,209,0.6)]"></i>
@@ -210,7 +230,6 @@
                     <p class="text-sm text-eve-text group-hover:text-white/90 transition-colors" data-i18n="f3Desc">内置 2D/3D 战术星图。自动规避高危星系，提供安全/最短路线规划，并支持击杀数据叠加显示，确保航行安全。</p>
                 </div>
 
-                <!-- 卡片 4: Pink (粉) -->
                 <div class="bg-eve-panel border border-eve-border p-6 rounded-lg hover:border-eve-pink/60 hover:shadow-[0_0_15px_rgba(230,87,209,0.2)] transition-all group fade-in-up" style="transition-delay: 0.3s;">
                     <div class="w-12 h-12 bg-eve-pink/10 rounded flex items-center justify-center mb-4 group-hover:bg-eve-pink/20 transition-colors">
                         <i class="ph ph-broadcast text-2xl text-eve-pink drop-shadow-[0_0_8px_rgba(230,87,209,0.6)]"></i>
@@ -219,7 +238,6 @@
                     <p class="text-sm text-eve-text group-hover:text-white/90 transition-colors" data-i18n="f4Desc">自动解析游戏内聊天日志，实时播报本地星系敌对目标出没信息，支持声音及弹窗双重警报，刷怪挖矿更安心。</p>
                 </div>
 
-                <!-- 卡片 5: Cyan (蓝) -->
                 <div class="bg-eve-panel border border-eve-border p-6 rounded-lg hover:border-eve-cyan/60 hover:shadow-[0_0_15px_rgba(30,177,228,0.2)] transition-all group fade-in-up" style="transition-delay: 0.4s;">
                     <div class="w-12 h-12 bg-eve-cyan/10 rounded flex items-center justify-center mb-4 group-hover:bg-eve-cyan/20 transition-colors">
                         <i class="ph ph-database text-2xl text-eve-cyan drop-shadow-[0_0_8px_rgba(30,177,228,0.6)]"></i>
@@ -228,7 +246,6 @@
                     <p class="text-sm text-eve-text group-hover:text-white/90 transition-colors" data-i18n="f5Desc">内置涵盖舰船、装备、蓝图及星系的详尽数据库。支持离线快速检索与属性对比，新伊甸万物皆在掌握。</p>
                 </div>
 
-                <!-- 卡片 6: Purple (紫) -->
                 <div class="bg-eve-panel border border-eve-border p-6 rounded-lg hover:border-eve-purple/60 hover:shadow-[0_0_15px_rgba(120,61,208,0.2)] transition-all group fade-in-up" style="transition-delay: 0.5s;">
                     <div class="w-12 h-12 bg-eve-purple/10 rounded flex items-center justify-center mb-4 group-hover:bg-eve-purple/20 transition-colors">
                         <i class="ph ph-globe-hemisphere-west text-2xl text-eve-purple drop-shadow-[0_0_8px_rgba(120,61,208,0.6)]"></i>
@@ -240,7 +257,7 @@
         </div>
     </section>
 
-    <!-- 界面展示 -->
+    <!-- 界面展示 UI Gallery - 一排三张，支持中英文图片切换 -->
     <section id="screenshots" class="py-24 bg-eve-panel/50 relative border-t border-eve-border/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12 fade-in-up">
@@ -249,65 +266,71 @@
                 <p class="mt-4 text-eve-text" data-i18n="uiSub">专为暗黑环境设计的现代化 WinUI 3 界面。</p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="group relative overflow-hidden rounded border border-eve-border hover:border-eve-purple/50 fade-in-up transition-all bg-[#0d121c] h-64 flex items-center justify-center cursor-pointer">
-                    <div class="flex flex-col items-center gap-2 text-eve-border group-hover:text-eve-purple transition-colors">
-                         <img src="Images/zh/Characters.png" >
+            <!-- 所有截图均基于 data-lang-img 属性，通过 js 切换图片源和对应标题 -->
+            <div class="gallery-grid fade-in-up">
+                <!-- 1. 角色概览 -->
+                <div class="screenshot-card group relative overflow-hidden rounded border border-eve-border hover:border-eve-purple/50 bg-[#0d121c] flex flex-col items-center justify-start p-4 transition-all">
+                    <div class="w-full flex justify-center items-center p-1">
+                        <img id="imgCharacters" src="Images/zh/Characters.png" alt="角色概览" class="rounded shadow-md pointer-events-none select-none">
                     </div>
-                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-4">
-                        <h4 class="font-scifi font-bold text-lg text-white" data-i18n="ui1">角色概览面板</h4>
-                    </div>
-                </div>
-
-                <div class="group relative overflow-hidden rounded border border-eve-border hover:border-eve-pink/50 fade-in-up transition-all bg-[#0d121c] h-64 flex items-center justify-center cursor-pointer" style="transition-delay: 0.1s;">
-                    <div class="flex flex-col items-center gap-2 text-eve-border group-hover:text-eve-pink transition-colors">
-                        <img src="Images/zh/Business.png" >
-                    </div>
-                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-4">
-                        <h4 class="font-scifi font-bold text-lg text-white" data-i18n="ui2">市场差价对比</h4>
+                    <div class="w-full mt-3 pt-2 text-center border-t border-eve-border/30">
+                        <h4 class="font-scifi font-bold text-md text-white tracking-wide" data-i18n="ui1">角色概览面板</h4>
                     </div>
                 </div>
 
-                <div class="group relative overflow-hidden rounded border border-eve-border hover:border-eve-purple/50 fade-in-up transition-all bg-[#0d121c] h-64 flex items-center justify-center cursor-pointer">
-                    <div class="flex flex-col items-center gap-2 text-eve-border group-hover:text-eve-purple transition-colors">
-                         <img src="Images/zh/Intel.png" >
+                <!-- 2. 市场差价对比 -->
+                <div class="screenshot-card group relative overflow-hidden rounded border border-eve-border hover:border-eve-pink/50 bg-[#0d121c] flex flex-col items-center justify-start p-4 transition-all">
+                    <div class="w-full flex justify-center items-center p-1">
+                        <img id="imgBusiness" src="Images/zh/Business.png" alt="市场差价对比" class="rounded shadow-md pointer-events-none select-none">
                     </div>
-                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-4">
-                        <h4 class="font-scifi font-bold text-lg text-white" data-i18n="ui1">频道预警</h4>
-                    </div>
-                </div>
-
-                <div class="group relative overflow-hidden rounded border border-eve-border hover:border-eve-pink/50 fade-in-up transition-all bg-[#0d121c] h-64 flex items-center justify-center cursor-pointer" style="transition-delay: 0.1s;">
-                    <div class="flex flex-col items-center gap-2 text-eve-border group-hover:text-eve-pink transition-colors">
-                        <img src="Images/zh/Map.png" >
-                    </div>
-                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-4">
-                        <h4 class="font-scifi font-bold text-lg text-white" data-i18n="ui2">星图</h4>
+                    <div class="w-full mt-3 pt-2 text-center border-t border-eve-border/30">
+                        <h4 class="font-scifi font-bold text-md text-white tracking-wide" data-i18n="ui2">市场差价对比</h4>
                     </div>
                 </div>
 
-                <div class="group relative overflow-hidden rounded border border-eve-border hover:border-eve-purple/50 fade-in-up transition-all bg-[#0d121c] h-64 flex items-center justify-center cursor-pointer">
-                    <div class="flex flex-col items-center gap-2 text-eve-border group-hover:text-eve-purple transition-colors">
-                         <img src="Images/zh/Market.png" >
+                <!-- 3. 频道预警 （支持中英文标题+图片）-->
+                <div class="screenshot-card group relative overflow-hidden rounded border border-eve-border hover:border-eve-purple/50 bg-[#0d121c] flex flex-col items-center justify-start p-4 transition-all">
+                    <div class="w-full flex justify-center items-center p-1">
+                        <img id="imgIntel" src="Images/zh/Intel.png" alt="频道预警" class="rounded shadow-md pointer-events-none select-none">
                     </div>
-                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-4">
-                        <h4 class="font-scifi font-bold text-lg text-white" data-i18n="ui1">市场价格明细</h4>
+                    <div class="w-full mt-3 pt-2 text-center border-t border-eve-border/30">
+                        <h4 class="font-scifi font-bold text-md text-white tracking-wide" data-i18n="uiIntel">频道预警</h4>
                     </div>
                 </div>
 
-                <div class="group relative overflow-hidden rounded border border-eve-border hover:border-eve-pink/50 fade-in-up transition-all bg-[#0d121c] h-64 flex items-center justify-center cursor-pointer" style="transition-delay: 0.1s;">
-                    <div class="flex flex-col items-center gap-2 text-eve-border group-hover:text-eve-pink transition-colors">
-                        <img src="Images/zh/Overview.png" >
+                <!-- 4. 星图 -->
+                <div class="screenshot-card group relative overflow-hidden rounded border border-eve-border hover:border-eve-pink/50 bg-[#0d121c] flex flex-col items-center justify-start p-4 transition-all">
+                    <div class="w-full flex justify-center items-center p-1">
+                        <img id="imgMap" src="Images/zh/Map.png" alt="星图" class="rounded shadow-md pointer-events-none select-none">
                     </div>
-                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-4">
-                        <h4 class="font-scifi font-bold text-lg text-white" data-i18n="ui2">多开预览</h4>
+                    <div class="w-full mt-3 pt-2 text-center border-t border-eve-border/30">
+                        <h4 class="font-scifi font-bold text-md text-white tracking-wide" data-i18n="uiMap">星图</h4>
+                    </div>
+                </div>
+
+                <!-- 5. 市场价格明细 -->
+                <div class="screenshot-card group relative overflow-hidden rounded border border-eve-border hover:border-eve-purple/50 bg-[#0d121c] flex flex-col items-center justify-start p-4 transition-all">
+                    <div class="w-full flex justify-center items-center p-1">
+                        <img id="imgMarket" src="Images/zh/Market.png" alt="市场价格明细" class="rounded shadow-md pointer-events-none select-none">
+                    </div>
+                    <div class="w-full mt-3 pt-2 text-center border-t border-eve-border/30">
+                        <h4 class="font-scifi font-bold text-md text-white tracking-wide" data-i18n="uiMarketDetail">市场价格明细</h4>
+                    </div>
+                </div>
+
+                <!-- 6. 多开预览 -->
+                <div class="screenshot-card group relative overflow-hidden rounded border border-eve-border hover:border-eve-pink/50 bg-[#0d121c] flex flex-col items-center justify-start p-4 transition-all">
+                    <div class="w-full flex justify-center items-center p-1">
+                        <img id="imgOverview" src="Images/zh/Overview.png" alt="多开预览" class="rounded shadow-md pointer-events-none select-none">
+                    </div>
+                    <div class="w-full mt-3 pt-2 text-center border-t border-eve-border/30">
+                        <h4 class="font-scifi font-bold text-md text-white tracking-wide" data-i18n="uiOverview">多开预览</h4>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 下载区 -->
     <section id="download" class="py-24 bg-eve-dark relative border-t border-eve-border/50">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-up">
             <i class="ph-duotone ph-rocket-launch text-6xl text-eve-pink mb-6 inline-block drop-shadow-[0_0_15px_rgba(230,87,209,0.5)]"></i>
@@ -317,11 +340,9 @@
             </p>
             
             <div class="flex flex-col items-center justify-center mb-12">
-                <!-- 底部大按钮使用 Purple 到 Pink 渐变 -->
                 <a href="https://github.com/qedsd/TheGuideToTheNewEden/releases" target="_blank" class="px-8 py-4 bg-gradient-to-r from-eve-purple to-eve-pink hover:from-eve-pink hover:to-eve-purple text-white font-bold font-scifi text-xl rounded transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(230,87,209,0.4)] hover:shadow-[0_0_30px_rgba(120,61,208,0.6)]">
                     <i class="ph-bold ph-download-simple"></i> <span data-i18n="dlBtn">前往 GitHub Releases 下载</span>
                 </a>
-                <!-- Windows 专属提示 -->
                 <div class="mt-4 flex items-center gap-1.5 text-sm text-eve-text">
                     <i class="ph-fill ph-windows-logo text-eve-cyan"></i>
                     <span data-i18n="windowsOnly">仅支持 Windows 10 / 11 操作系统</span>
@@ -332,14 +353,11 @@
                 <h4 class="text-lg font-bold mb-4 font-scifi border-b border-eve-border pb-2 flex items-center gap-2">
                     <i class="ph ph-git-pull-request text-eve-purple"></i> <span data-i18n="devTitle">仓库参与与调整</span>
                 </h4>
-                <ul class="space-y-3 text-sm text-eve-text list-disc list-inside" id="dev-list">
-                    <!-- 列表内容通过 i18n 注入，其中超链接颜色会被设置为 text-eve-cyan -->
-                </ul>
+                <ul class="space-y-3 text-sm text-eve-text list-disc list-inside" id="dev-list"></ul>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="bg-[#05080f] py-10 border-t border-eve-border">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="text-eve-text text-sm font-scifi">
@@ -351,47 +369,25 @@
         </div>
     </footer>
 
-    <!-- JS 脚本：GitHub API, 动画, 国际化 -->
     <script>
-        // 1. 获取 GitHub 仓库 Star 数量
         async function fetchGitHubStars() {
             try {
                 const response = await fetch('https://api.github.com/repos/qedsd/TheGuideToTheNewEden');
-                
-                if (!response.ok) {
-                    throw new Error('网络响应异常');
-                }
-                
+                if (!response.ok) throw new Error('网络响应异常');
                 const data = await response.json();
                 const stars = data.stargazers_count;
-                
-                // 格式化数字 (例如 1200 格式化为 1.2k)
                 const formattedStars = stars > 999 ? (stars / 1000).toFixed(1) + 'k' : stars;
-                
-                // 更新页面中的数字
-                document.querySelectorAll('.star-count').forEach(el => {
-                    el.textContent = formattedStars;
-                });
-                
-                // 显示包含 Star 数量的容器
+                document.querySelectorAll('.star-count').forEach(el => { el.textContent = formattedStars; });
                 document.querySelectorAll('.github-stars').forEach(el => {
                     el.classList.remove('hidden');
-                    el.classList.add('flex'); // 或者 inline-flex
+                    el.classList.add('flex');
                 });
-            } catch (error) {
-                console.error('获取 GitHub Star 失败:', error);
-            }
+            } catch (error) { console.error('获取 GitHub Star 失败:', error); }
         }
 
-        // 2. 页面加载初始化
         document.addEventListener('DOMContentLoaded', () => {
-            // 设置当前年份
             document.getElementById('year').textContent = new Date().getFullYear();
-            
-            // 触发获取 Star 数
             fetchGitHubStars();
-
-            // 触发滚动动画观察器
             const observer = new IntersectionObserver((entries, obs) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -400,11 +396,10 @@
                     }
                 });
             }, { threshold: 0.15 });
-
             document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
         });
 
-        // 3. 多语言(i18n)数据与逻辑
+        // 国际化数据：新增 uiIntel, uiMap, uiMarketDetail, uiOverview 四个字段，并维护图片路径映射
         const i18nData = {
             zh: {
                 navFeatures: "核心功能", navScreenshots: "界面展示", navDownload: "下载安装",
@@ -419,17 +414,13 @@
                 f4Title: "本地情报预警", f4Desc: "自动解析游戏内聊天日志，实时播报本地星系敌对目标出没信息，支持声音及弹窗双重警报，刷怪挖矿更安心。",
                 f5Title: "深度数据百科", f5Desc: "内置涵盖舰船、装备、蓝图及星系的详尽数据库。支持离线快速检索与属性对比，新伊甸万物皆在掌握。",
                 f6Title: "国服/欧服双端支持", f6Desc: "底层架构同时兼容 EVE 晨曦（国服）与 Tranquility（欧服）API 数据接口，一次配置，双服畅游。",
-                uiSub: "专为暗黑环境设计的现代化 WinUI 3 界面。", ui1: "角色概览面板", ui2: "市场趋势图表",
-                dlTitle: "准备好跃迁了吗？",
-                dlDesc: "获取最新版本的 <b>新伊甸漫游指南 (The Guide To The New Eden)</b>。该项目开源免费，持续由社区驱动更新。请前往 GitHub Releases 页面下载编译好的安装包。",
+                uiSub: "专为暗黑环境设计的现代化 WinUI 3 界面。", ui1: "角色概览面板", ui2: "市场差价对比",
+                uiIntel: "频道预警", uiMap: "星图", uiMarketDetail: "市场价格明细", uiOverview: "多开预览",
+                dlTitle: "准备好跃迁了吗？", dlDesc: "获取最新版本的 <b>新伊甸漫游指南 (The Guide To The New Eden)</b>。该项目开源免费，持续由社区驱动更新。请前往 GitHub Releases 页面下载编译好的安装包。",
                 dlBtn: "前往 GitHub Releases 下载", devTitle: "仓库参与与调整",
-                
-                devList: `
-                    <li>如果您发现了 Bug，请在 GitHub 提交 <a href='https://github.com/qedsd/TheGuideToTheNewEden/issues' class='text-eve-cyan hover:text-eve-pink transition-colors underline'>Issue</a>，附带错误日志或复现步骤。</li>
-                    <li>欢迎开发者提交 <a href='https://github.com/qedsd/TheGuideToTheNewEden/pulls' class='text-eve-cyan hover:text-eve-pink transition-colors underline'>Pull Request</a>。无论是新增功能、优化界面还是修复问题，社区的贡献让指南更强大。</li>
-                    <li>代码结构调整建议：本项目基于 C# WinUI 3 开发，建议使用 Visual Studio 2022+ 打开解决方案进行编译调试。</li>
-                `,
-                disclaimer: "EVE Online及相关Logo等版权归 CCP hf. 所有。此工具为玩家社区饭制开源项目，与官方无关。"
+                devList: `<li>如果您发现了 Bug，请在 GitHub 提交 <a href='https://github.com/qedsd/TheGuideToTheNewEden/issues' class='text-eve-cyan hover:text-eve-pink transition-colors underline'>Issue</a>，附带错误日志或复现步骤。</li><li>欢迎开发者提交 <a href='https://github.com/qedsd/TheGuideToTheNewEden/pulls' class='text-eve-cyan hover:text-eve-pink transition-colors underline'>Pull Request</a>。无论是新增功能、优化界面还是修复问题，社区的贡献让指南更强大。</li><li>代码结构调整建议：本项目基于 C# WinUI 3 开发，建议使用 Visual Studio 2022+ 打开解决方案进行编译调试。</li>`,
+                disclaimer: "EVE Online及相关Logo等版权归 CCP hf. 所有。此工具为玩家社区饭制开源项目，与官方无关。",
+                imgMap: { hero: "Images/zh/Home_Dark.png", characters: "Images/zh/Characters.png", business: "Images/zh/Business.png", intel: "Images/zh/Intel.png", map: "Images/zh/Map.png", market: "Images/zh/Market.png", overview: "Images/zh/Overview.png" }
             },
             en: {
                 navFeatures: "Features", navScreenshots: "Gallery", navDownload: "Download",
@@ -444,45 +435,53 @@
                 f4Title: "Local Intel Warning", f4Desc: "Auto-parse in-game chat logs. Broadcast hostile presence in local systems with audio and pop-up alerts. Rat and mine with peace of mind.",
                 f5Title: "Comprehensive Database", f5Desc: "Built-in detailed database covering ships, modules, blueprints, and systems. Fast offline retrieval and stat comparison at your fingertips.",
                 f6Title: "Serenity & Tranquility", f6Desc: "Underlying architecture fully supports both Serenity (CN) and Tranquility (Global) APIs. Configure once, play anywhere.",
-                uiSub: "Modern WinUI 3 interface crafted for dark gaming environments.", ui1: "Character Dashboard", ui2: "Market Trend Charts",
-                dlTitle: "Ready to Jump?",
-                dlDesc: "Get the latest version of <b>The Guide To The New Eden</b>. This project is free, open-source, and community-driven. Download the compiled binaries via GitHub Releases.",
+                uiSub: "Modern WinUI 3 interface crafted for dark gaming environments.", ui1: "Character Dashboard", ui2: "Market Spread Analysis",
+                uiIntel: "Intel Channel", uiMap: "Starmap", uiMarketDetail: "Market Price Details", uiOverview: "Multi-Client Preview",
+                dlTitle: "Ready to Jump?", dlDesc: "Get the latest version of <b>The Guide To The New Eden</b>. This project is free, open-source, and community-driven. Download the compiled binaries via GitHub Releases.",
                 dlBtn: "Download from GitHub Releases", devTitle: "Repository Contributions",
-                
-                devList: `
-                    <li>If you encounter a bug, please submit an <a href='https://github.com/qedsd/TheGuideToTheNewEden/issues' class='text-eve-cyan hover:text-eve-pink transition-colors underline'>Issue</a> on GitHub with error logs or steps to reproduce.</li>
-                    <li>Developers are welcome to submit <a href='https://github.com/qedsd/TheGuideToTheNewEden/pulls' class='text-eve-cyan hover:text-eve-pink transition-colors underline'>Pull Requests</a>. From new features to UI tweaks, community contributions make the Guide better.</li>
-                    <li>Architecture Note: Built with C# WinUI 3. We recommend using Visual Studio 2022+ to open the solution for compilation and debugging.</li>
-                `,
-                disclaimer: "EVE Online, the EVE logo, EVE and all associated logos and designs are the intellectual property of CCP hf. This tool is a fan-made project and is not affiliated with CCP hf."
+                devList: `<li>If you encounter a bug, please submit an <a href='https://github.com/qedsd/TheGuideToTheNewEden/issues' class='text-eve-cyan hover:text-eve-pink transition-colors underline'>Issue</a> on GitHub with error logs or steps to reproduce.</li><li>Developers are welcome to submit <a href='https://github.com/qedsd/TheGuideToTheNewEden/pulls' class='text-eve-cyan hover:text-eve-pink transition-colors underline'>Pull Requests</a>. From new features to UI tweaks, community contributions make the Guide better.</li><li>Architecture Note: Built with C# WinUI 3. We recommend using Visual Studio 2022+ to open the solution for compilation and debugging.</li>`,
+                disclaimer: "EVE Online, the EVE logo, EVE and all associated logos and designs are the intellectual property of CCP hf. This tool is a fan-made project and is not affiliated with CCP hf.",
+                imgMap: { hero: "Images/en/Home_Dark.png", characters: "Images/en/Characters.png", business: "Images/en/Business.png", intel: "Images/en/Intel.png", map: "Images/en/Map.png", market: "Images/en/Market.png", overview: "Images/en/Overview.png" }
             }
         };
 
-        // 切换语言方法
         function switchLang(lang) {
-            // 更新本地存储
             localStorage.setItem('guide_lang', lang);
-            
-            // 切换按钮高亮状态
             document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
             document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-            
-            // 更新 html lang 属性
             document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en-US';
-
-            // 替换所有带有 data-i18n 属性的内容
+            
+            // 更新所有 data-i18n 文本/标题内容
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (i18nData[lang] && i18nData[lang][key]) {
-                    el.innerHTML = i18nData[lang][key];
-                }
+                if (i18nData[lang] && i18nData[lang][key]) el.innerHTML = i18nData[lang][key];
             });
-
-            // 单独替换 ul 列表
+            
+            // 更新动态列表
             document.getElementById('dev-list').innerHTML = i18nData[lang].devList;
+            
+            // 获取当前语言对应的图片路径映射
+            const imgPaths = i18nData[lang].imgMap;
+            if (imgPaths) {
+                // 首屏预览大图
+                const heroImg = document.getElementById('heroPreviewImage');
+                if (heroImg && imgPaths.hero) heroImg.src = imgPaths.hero;
+                // 六个卡片图片
+                const imgChars = document.getElementById('imgCharacters');
+                if (imgChars && imgPaths.characters) imgChars.src = imgPaths.characters;
+                const imgBusiness = document.getElementById('imgBusiness');
+                if (imgBusiness && imgPaths.business) imgBusiness.src = imgPaths.business;
+                const imgIntel = document.getElementById('imgIntel');
+                if (imgIntel && imgPaths.intel) imgIntel.src = imgPaths.intel;
+                const imgMap = document.getElementById('imgMap');
+                if (imgMap && imgPaths.map) imgMap.src = imgPaths.map;
+                const imgMarket = document.getElementById('imgMarket');
+                if (imgMarket && imgPaths.market) imgMarket.src = imgPaths.market;
+                const imgOverview = document.getElementById('imgOverview');
+                if (imgOverview && imgPaths.overview) imgOverview.src = imgPaths.overview;
+            }
         }
 
-        // 页面加载时初始化语言
         const savedLang = localStorage.getItem('guide_lang') || 'zh';
         switchLang(savedLang);
     </script>
